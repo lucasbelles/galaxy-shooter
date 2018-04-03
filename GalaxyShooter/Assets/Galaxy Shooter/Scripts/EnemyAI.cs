@@ -7,11 +7,7 @@ public class EnemyAI : MonoBehaviour {
     [SerializeField]
     private float _speed = 5.0f;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
+
 	// Update is called once per frame
 	void Update () {
 
@@ -19,7 +15,30 @@ public class EnemyAI : MonoBehaviour {
 
         if (transform.position.y <= -6)
         {
-            transform.position = new Vector3(Random.Range(-8, 8), 6.0f, 0);
+            float _RandomX = Random.Range(-8.0f, 8.0f);
+            transform.position = new Vector3(_RandomX, 6.0f, 0);
         }
 	}
+
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Player")
+        {
+            Player player = other.GetComponent<Player>();
+            player.health = player.health - 1;
+
+            if (player.health <= 0)
+            {
+                Destroy(player);
+            }
+        }
+        else if (other.tag == "Laser")
+        {
+            Laser laser = other.GetComponent<Laser>();
+            Destroy(laser);
+        }
+
+        Destroy(this.gameObject);
+    }
 }

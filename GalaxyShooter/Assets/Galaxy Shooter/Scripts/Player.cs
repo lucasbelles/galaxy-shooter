@@ -18,8 +18,10 @@ public class Player : MonoBehaviour {
     [SerializeField]
     private float _speed = 5.0f;
 
-    public bool canTripleShoot = false;
-    public bool canFasterPlayer = false;
+    public int health = 3;
+
+    public bool IsTripleShoot = false;
+    public bool IsFasterPlayer = false;
 
 	// Use this for initialization
 	void Start () {
@@ -44,7 +46,7 @@ public class Player : MonoBehaviour {
         //Este métedo serve para instanciar um objeto 'laser' quando for pressionado a telca espaço.
         if (Time.time > _canFire)
         {
-            if (canTripleShoot)
+            if (IsTripleShoot)
             {
                 Instantiate(_tripleShoot, transform.position, Quaternion.identity);
             }
@@ -63,7 +65,7 @@ public class Player : MonoBehaviour {
 
         float verticalInput = Input.GetAxis("Vertical");
 
-        if (canFasterPlayer)
+        if (IsFasterPlayer)
         {
             transform.Translate(Vector3.right * _speed * 1.5f * horizontalInput * Time.deltaTime);
             transform.Translate(Vector3.up * _speed * 1.5f * verticalInput * Time.deltaTime);
@@ -101,14 +103,13 @@ public class Player : MonoBehaviour {
 
     public void FasterPlayerOn()
     {
-        canFasterPlayer = true;
-        Debug.Log("Here!");
+        IsFasterPlayer = true;
         StartCoroutine(FasterPlayerPowerDownRoutine());
     }
 
     public void TripleShotPowerUpOn()
     {
-        canTripleShoot = true;
+        IsTripleShoot = true;
         StartCoroutine(TripleShotPowerDownRoutine());
     }
 
@@ -117,12 +118,12 @@ public class Player : MonoBehaviour {
     public IEnumerator FasterPlayerPowerDownRoutine()
     {
         yield return new WaitForSeconds(5.0f);
-        canFasterPlayer = false;
+        IsFasterPlayer = false;
     }
 
     public IEnumerator TripleShotPowerDownRoutine()
     {
         yield return  new WaitForSeconds(5.0f);
-        canTripleShoot = false;
+        IsTripleShoot = false;
     }
 }
